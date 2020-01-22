@@ -1,0 +1,29 @@
+{
+  "name": "go-keep-react",
+  "version": "1.0.0",
+  "description": "go-keep-server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Real-Music/go-keep-react.git"
+  },
+  "author": "Fedjio Raymond",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Real-Music/go-keep-react/issues"
+  },
+  "homepage": "https://github.com/Real-Music/go-keep-react#readme",
+  "dependencies": {
+    "@hapi/joi": "^17.1.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "pg": "^7.17.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.3"
+  }
+}
