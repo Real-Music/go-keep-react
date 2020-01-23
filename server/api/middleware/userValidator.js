@@ -49,7 +49,77 @@ module.exports = {
         default:
           res.status(400).json({
             error: {
-              message: "Invalid User Credentails, please try again"
+              message: "Invalid User Credentails"
+            }
+          });
+          break;
+      }
+    } else {
+      next();
+    }
+  },
+
+  // Login validator
+  loginValidator: (req, res, next) => {
+    const schema = Joi.object({
+      email: Joi.string()
+        .email({
+          minDomainSegments: 2,
+          tlds: { allow: ["com", "fr", "net"] }
+        })
+        .required(),
+      password: Joi.string()
+        .min(5)
+        .max(30)
+        .required()
+    });
+
+    const { error, value } = schema.validate(req.body);
+    if (error) {
+      switch (error.details[0].context.key) {
+        case "email":
+          res.status(400).json({
+            error: { message: "Invalid email or password" }
+          });
+          break;
+
+        case "password":
+          res.status(400).json({
+            error: { message: "Invalid email or password" }
+          });
+          break;
+
+        default:
+          res.status(400).json({
+            error: {
+              message: "Invalid User Credentails"
+            }
+          });
+          break;
+      }
+    } else {
+      next();
+    }
+  },
+
+  validateID: (req, res, next) => {
+    const schema = Joi.object({
+      userId: Joi.number().required()
+    });
+
+    const { error, value } = schema.validate(req.params);
+    if (error) {
+      switch (error.details[0].context.key) {
+        case "userId":
+          res
+            .status(400)
+            .json({ error: { message: "userId must be of type number" } });
+          break;
+
+        default:
+          res.status(400).json({
+            error: {
+              message: "Invalid User Credentails"
             }
           });
           break;

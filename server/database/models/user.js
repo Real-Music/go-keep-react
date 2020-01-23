@@ -8,8 +8,6 @@ function hashPassword(user, options) {
     return;
   }
 
-  console.log(user.prototype);
-
   return bcrypt.hash(user.password, SALT_FACTOR).then(hash => {
     user.setDataValue("password", hash);
   });
@@ -61,9 +59,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   User.associate = models => {
     // associations can be defined here
-    // User.hasMany(models.Notes, {
-    //   foreignKey: "userId"
-    // });
+    User.hasMany(models.Note, { as: "userId" });
   };
 
   return User;

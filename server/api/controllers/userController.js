@@ -11,13 +11,13 @@ module.exports = {
 
       if (!user)
         return res
-          .status(403)
+          .status(400)
           .json({ error: { message: "The login information was incorrect" } });
 
       const isPasswordValid = await user.comparePassword(password);
       if (!isPasswordValid)
         return res
-          .status(403)
+          .status(400)
           .json({ error: { message: "The login information was incorrect" } });
 
       res
@@ -34,7 +34,7 @@ module.exports = {
     try {
       if (await User.findOne({ where: { email: req.body.email } }))
         return res
-          .status(403)
+          .status(400)
           .json({ error: { message: "This email is already in use" } });
 
       const user = await User.create(req.body);
@@ -69,7 +69,7 @@ module.exports = {
           });
         });
 
-      res.status(403).json({
+      res.status(400).json({
         message: `No valid entry found for provided id ${req.params.userId}`
       });
     } catch (error) {
@@ -91,8 +91,8 @@ module.exports = {
           });
         });
 
-      res.status(403).json({
-        mmessage: `No valid entry found for provided id ${req.params.userId}`
+      res.status(400).json({
+        message: `No valid entry found for provided id ${req.params.userId}`
       });
     } catch (error) {
       console.log(error);

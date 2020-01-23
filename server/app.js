@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 /** Routes */
 const userRoutes = require(__dirname + "/api/routes/users");
+const noteRoutes = require(__dirname + "/api/routes/notes");
 
 /** Static Folder */
 app.use(express.static(__dirname + "/public"));
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
 
 /** Routes */
 app.use(userRoutes);
+app.use("/notes", noteRoutes);
 
 // Erro Handling
 app.use("*", (req, res, next) => {
