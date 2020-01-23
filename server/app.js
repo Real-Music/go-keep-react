@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 /** Routes */
-app.use("/users", userRoutes);
+app.use(userRoutes);
 
 // Erro Handling
 app.use("*", (req, res, next) => {

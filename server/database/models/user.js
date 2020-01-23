@@ -1,4 +1,20 @@
 "use strict";
+const Promise = require("bluebird");
+const bcrypt = Promise.promisifyAll(require("bcrypt"));
+
+function hashPassword(user, options) {
+  const SALT_FACTOR = 10;
+  if (!user.changed("password")) {
+    return;
+  }
+
+  console.log(user.prototype);
+
+  return bcrypt.hash(user.password, SALT_FACTOR).then(hash => {
+    user.setDataValue("password", hash);
+  });
+}
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
@@ -29,17 +45,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [8, 250]
+          len: [5, 250]
         }
       }
     },
-    {}
+    {
+      hooks: {
+        beforeCreate: hashPassword,
+        beforeUpdate: hashPassword
+      }
+    }
   );
+  User.prototype.comparePassword = function(password) {
+    return bcrypt.compare(password, this.password);
+  };
   User.associate = models => {
     // associations can be defined here
     // User.hasMany(models.Notes, {
     //   foreignKey: "userId"
     // });
   };
+
   return User;
 };
