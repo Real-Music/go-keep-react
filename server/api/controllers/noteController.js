@@ -1,5 +1,6 @@
 "use strict";
-const { User, Note } = require("../../database/models");
+const { User, Note, Label, NoteLabel } = require("../../database/models");
+const notelabeController = require("./notelabelController");
 
 module.exports = {
   // fetch all note
@@ -64,20 +65,46 @@ module.exports = {
       res.status(500).json({ error: { message: error } });
     }
   },
+
   // create note
   createNote: async (req, res, next) => {
     try {
+      /** Check if labelId  for many to many relationship*/
+
       if (!(await User.findByPk(req.body.UserId)))
         return res.status(400).json({
           error: {
-            message: `No valid entry found for provided id ${req.params.userId}`
+            message: `User doesn't exist`
           }
         });
 
-      const note = await Note.create(req.body);
-      res.status(200).json({
-        message: "Note created",
-        createdNote: note
+      await Note.create(req.body).then(async response => {
+        if (req.body.label) {
+          // If label, update NoteLabel tabel and return succes
+          const state = await notelabeController.associate(
+            req.body.label,
+            response.id
+          );
+
+          // Validate state
+          if (state.message.status) {
+            res.status(200).json({
+              message: "Note created",
+              createdNote: response
+            });
+          } else {
+            // Delete Created Note
+            await response.destroy().then(deletedNote => {
+              res.status(400).json({ error: { message: state.message.error } });
+            });
+          }
+        }
+
+        // if no label exist on req.body
+        res.status(200).json({
+          message: "Note created",
+          createdNote: response
+        });
       });
     } catch (error) {
       console.log(error);
@@ -99,7 +126,9 @@ module.exports = {
         });
 
       res.status(400).json({
-        message: `No valid entry found for provided id ${req.params.noteId}`
+        error: {
+          message: `No valid entry found for provided id ${req.params.noteId}`
+        }
       });
     } catch (error) {
       console.log(error);
@@ -121,7 +150,9 @@ module.exports = {
         });
 
       res.status(400).json({
-        message: `No valid entry found for provided id ${req.params.noteId}`
+        error: {
+          message: `No valid entry found for provided id ${req.params.noteId}`
+        }
       });
     } catch (error) {
       console.log(error);
