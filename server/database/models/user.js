@@ -45,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: [5, 250]
         }
+      },
+      profileImg: {
+        type: DataTypes.STRING,
+        defaultValue: "profile/go-keep.png"
       }
     },
     {

@@ -11,6 +11,14 @@ router.get("/userId", (req, res) => {
   });
 });
 
+// fetch notes base on labels
+router.get(
+  "/:userId/:name",
+  verifyToken,
+  check.userIdAndName,
+  labelController.fetchNotesPerLabel
+);
+
 // create label
 router.post("/", verifyToken, labelController.createLabel);
 

@@ -26,5 +26,39 @@ module.exports = {
     } else {
       next();
     }
+  },
+
+  userIdAndName: (req, res, next) => {
+    const schema = Joi.object({
+      userId: Joi.number().required(),
+      name: Joi.string().required()
+    });
+
+    const { error, value } = schema.validate(req.params);
+    if (error) {
+      switch (error.details[0].context.key) {
+        case "userId":
+          res.status(400).json({
+            error: { message: "userId is required" }
+          });
+          break;
+
+        case "name":
+          res.status(400).json({
+            error: { message: "userId is required" }
+          });
+          break;
+
+        default:
+          res.status(400).json({
+            error: {
+              message: "Invalid User Credentails"
+            }
+          });
+          break;
+      }
+    } else {
+      next();
+    }
   }
 };

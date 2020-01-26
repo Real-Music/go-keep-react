@@ -1,6 +1,8 @@
 "use strict";
 const { User } = require("../../database/models");
 const token = require("../middleware/tokenValidator");
+const imageHandler = require("../handler/imageHandler");
+const { BASE_URL } = require("../../database/config/config");
 
 module.exports = {
   // log in user
@@ -45,7 +47,7 @@ module.exports = {
           fname: user.fname,
           lname: user.lname,
           email: user.email,
-          password: user.password,
+          profileImg: user.profileImg,
           updatedAt: user.updatedAt,
           createdAt: user.createdAt
         }
@@ -59,18 +61,31 @@ module.exports = {
   // update user details
   updateUser: async (req, res, next) => {
     try {
-      const user = await User.findByPk(req.params.userId);
-
-      if (user)
-        return await user.update(req.body).then(response => {
-          res.status(200).json({
-            message: "User updated",
-            user: response
+      await imageHandler(req, res, async err => {
+        if (err) {
+          res.status(400).json({
+            error: { message: err }
           });
-        });
+        } else {
+          console.log(req.file);
+          req.body["profileImg"] = req.file.path.replace("public/", "");
 
-      res.status(400).json({
-        message: `No valid entry found for provided id ${req.params.userId}`
+          console.log(req.body);
+
+          const user = await User.findByPk(req.params.userId);
+
+          if (user)
+            return await user.update(req.body).then(response => {
+              response["profileImg"] = BASE_URL + response.profileImg;
+              res.status(200).json({
+                message: "User updated",
+                user: response
+              });
+            });
+          res.status(400).json({
+            message: `No valid entry found for provided id ${req.params.userId}`
+          });
+        }
       });
     } catch (error) {
       console.log(error);

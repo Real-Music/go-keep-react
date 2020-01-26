@@ -14,10 +14,11 @@ module.exports = {
             return { message: { status: true } };
           })
           .catch(error => {
+            console.log(error)
             return {
               message: {
                 status: false,
-                error: `One of the label does not exist`
+                error: `Invalid label`
               }
             };
           });

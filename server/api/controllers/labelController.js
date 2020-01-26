@@ -2,6 +2,34 @@
 const { User, Note, Label, NoteLabel } = require("../../database/models");
 
 module.exports = {
+  // Fetch notes per labe
+  fetchNotesPerLabel: async (req, res, next) => {
+    try {
+      if (!(await User.findByPk(req.params.userId)))
+        return res.status(400).json({
+          error: {
+            message: `User doesn't exist`
+          }
+        });
+
+      const label = await Label.findOne({ where: { name: req.params.name } });
+      if (!label)
+        return res
+          .status(400)
+          .json({ error: { message: `Label doesn't exist` } });
+
+      const { count, rows } = await NoteLabel.findAndCountAll({
+        where: { LabelId: label.id },
+        raw: true,
+        include: [Note, Label]
+      });
+
+      res.status(200).json({ count: count, notes: rows });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: { message: error } });
+    }
+  },
   // create label
   createLabel: async (req, res, next) => {
     try {
