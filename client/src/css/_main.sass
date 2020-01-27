@@ -1,0 +1,84 @@
+$base_color: #f4b425
+$base_red: #ea4635
+$base_blue: #1a73e8
+
+// Form Inputs
+.go-keep-group
+    margin: 40px 0
+    position: relative
+    input
+        &[type="text"],&[type="password"]
+            font-size: 15px
+            line-height: 24px
+            color: #333
+            width: 100%
+            box-sizing: border-box
+            letter-spacing: 1px
+            outline: none
+
+    .go-keep-input
+        border: 1px solid #ccc
+        padding: 14px 14px
+        transition: 0.4s
+        background: transparent
+
+        ~ .focus-border
+            &::before, &::after
+                content: ""
+                position: absolute
+                top: 0
+                left: 0
+                width: 0
+                height: 2px
+                background-color: $base_blue
+                transition: 0.3s
+            &::after
+                top: auto
+                bottom: 0
+                left: auto
+                right: 0
+            i
+                &::before, &::after
+                    content: ""
+                    position: absolute
+                    top: 0
+                    left: 0
+                    width: 2px
+                    height: 0
+                    background-color: $base_blue
+                    transition: 0.4s
+                &::after
+                    left: auto
+                    right: 0
+                    top: auto
+                    bottom: 0
+
+        ~ label
+            position: absolute
+            left: 14px
+            width: 100%
+            top: 16px
+            color: #aaa
+            transition: 0.3s
+            z-index: -1
+            letter-spacing: 0.5px
+
+        &:focus, &:valid
+            ~ .focus-border
+                &::before, &::after
+                    width: 100%
+                    transition: 0.3s
+                i
+                    &::before, &::after
+                        height: 100%
+                        transition: 0.4s
+            ~ label
+                top: -12px
+                left: 5px
+                width: fit-content
+                font-size: 12px
+                color: $base_blue
+                transition: 0.3s
+                background: white
+                z-index: 1
+                padding: 5px
