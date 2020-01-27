@@ -69,8 +69,6 @@ module.exports = {
   // create note
   createNote: async (req, res, next) => {
     try {
-      /** Check if labelId  for many to many relationship*/
-
       if (!(await User.findByPk(req.body.UserId)))
         return res.status(400).json({
           error: {
@@ -118,7 +116,33 @@ module.exports = {
       const note = await Note.findByPk(req.params.noteId);
 
       if (note)
-        return await note.update(req.body).then(response => {
+        return await note.update(req.body).then(async response => {
+          if (req.body.label) {
+            // If label, update NoteLabel tabel and return succes
+            const state = await notelabeController.associate(
+              req.body.label,
+              response.id
+            );
+
+            // Validate state
+            if (state.message.status) {
+              res.status(200).json({
+                message: "Note updated",
+                note: response
+              });
+            } else {
+              // Delete Created Note
+              await response.destroy().then(deletedNote => {
+                res.status(400).json({
+                  error: {
+                    message: state.message.error
+                  }
+                });
+              });
+            }
+          }
+
+          // if no label exist on req.body
           res.status(200).json({
             message: "Note updated",
             note: response

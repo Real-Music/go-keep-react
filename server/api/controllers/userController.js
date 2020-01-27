@@ -67,10 +67,7 @@ module.exports = {
             error: { message: err }
           });
         } else {
-          console.log(req.file);
           req.body["profileImg"] = req.file.path.replace("public/", "");
-
-          console.log(req.body);
 
           const user = await User.findByPk(req.params.userId);
 
