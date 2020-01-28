@@ -1,4 +1,4 @@
-@import '_main.sass'
+@import '_var.sass'
 
 .login_container
     .login_wrapper
@@ -12,10 +12,19 @@
         border-radius: 8px
         padding: 30px
 
+        @media screen and ( max-width: 600px )
+            position: unset
+            top: 0
+            left: 0
+            transform: none
+            width: unset
+            height: unset
+            border: none
+
     .btn
         display: flex
         justify-content: space-between
         align-items: center
-        a
-            text-decoration: none
-            color: $base_blue
+
+        @media screen and ( max-width: 600px )
+            flex-wrap: wrap-reverse

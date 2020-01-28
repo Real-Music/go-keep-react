@@ -4,6 +4,11 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+/* link */
+a {
+  text-decoration: none;
+  color: #1a73e8;
+}
 
 /* Buttons */
 .go-keep-btn {
@@ -20,7 +25,7 @@
 /* Spinner */
 .spinner_border {
   padding: 7px 25px;
-  border: 1px solid #2076e8;
+  /* border: 1px solid #2076e8; */
   width: fit-content;
   border-radius: 5px;
 }

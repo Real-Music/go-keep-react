@@ -1,0 +1,74 @@
+@import '_var'
+
+.signup_container
+    .singup_wrapper
+        display: grid
+        grid-template-columns: 1.24fr 1fr
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%,-50%)
+        width: 753px
+        height: 530px
+        border: 1px solid #8080807a
+        border-radius: 8px
+        padding: 42px
+
+        .form_image
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+            text-align: center
+            padding: 34px
+            img
+                object-fit: contain
+                height: 220px
+
+        .form_section
+            display: grid
+            grid-template-columns: repeat(2,1fr)
+            grid-template-rows: repeat(7,auto)
+            grid-template-areas: "logo logo" "fname lname" "email email" "email_info email_info" "password confirm" "gmail gmail" "btn btn"
+            column-gap: 15px
+            .logo_and_title
+                grid-area: logo
+                margin-bottom: 19px
+                text-align: left
+            .fname
+                grid-area: fname
+            .lname
+                grid-area: lname
+            .email
+                grid-area: email
+                margin-bottom: 0 !important
+            .email_info
+                grid-area: email_info
+            p
+                font-size: 13px
+                a
+                    font-size: 15px
+            .password
+                grid-area: password
+            .confirm
+                grid-area: confirm
+            .gmail
+                grid-area: gmail
+            .btn
+                grid-area: btn
+                display: flex
+                justify-content: space-between
+                align-items: center
+                flex-wrap: wrap-reverse
+                margin-top: 20px
+
+            .go-keep-group
+                margin: 0px 0 10px 0
+                height: fit-content
+                .go-keep-input
+                    padding: 6px
+                    border-radius: 5px
+                    ~ label
+                        font-size: 15px
+                        top: 7px
+                        width: fit-content
