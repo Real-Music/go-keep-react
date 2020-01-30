@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+// import API from "../utils/Api";
+import { connect } from "react-redux";
+import { getUser } from "../reducers/user/actions";
 
 // components
 import LogoAndTitle from "../components/LogoAndTitle";
@@ -14,20 +17,22 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      spinner: false,
       data: {
         email: "",
         password: ""
       }
     };
   }
-  handleSubmit = event => {
-    event.preventDefault();
-    this.setState({
-      spinner: true
-    });
 
-    console.log(this.state.data);
+  componentDidMount() {
+    if (this.props.isLogin) this.props.history.push("/home");
+  }
+
+  handleSubmit = async event => {
+    event.preventDefault();
+
+    let data = JSON.stringify(this.state.data);
+    await this.props.getCurrentUser(data);
   };
 
   handleInputChange = event => {
@@ -40,7 +45,7 @@ class Login extends Component {
   };
 
   render() {
-    const toggleLoader = this.state.spinner ? (
+    const toggleSpinner = this.props.spinner ? (
       <Spinner border={true} />
     ) : (
       <button className="go-keep-btn">Next</button>
@@ -51,7 +56,10 @@ class Login extends Component {
         <div className="login_wrapper">
           <form onSubmit={this.handleSubmit}>
             <LogoAndTitle title="Sign in" subtitle="Use your React Account" />
+
             <GoInput
+              error={this.props.loginError}
+              className="email"
               name="email"
               type="email"
               label="Email"
@@ -69,7 +77,7 @@ class Login extends Component {
 
             <div className="btn">
               <Link to="/signup">Create account</Link>
-              {toggleLoader}
+              {toggleSpinner}
             </div>
           </form>
         </div>
@@ -78,4 +86,18 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = ({ loginError, spinner, user, isLogin }) => ({
+  loginError,
+  spinner,
+  user,
+  isLogin
+});
+
+// dispatch to store
+const mapDispatchToProps = dispatch => ({
+  getCurrentUser(user) {
+    dispatch(getUser(user));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

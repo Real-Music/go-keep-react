@@ -20,10 +20,11 @@
             justify-content: center
             align-items: center
             text-align: center
-            padding: 34px
             img
                 object-fit: contain
-                height: 220px
+                height: 200px
+            p
+                width: 60%
 
         .form_section
             display: grid
@@ -42,8 +43,10 @@
             .email
                 grid-area: email
                 margin-bottom: 0 !important
+                margin-top: 5px !important
             .email_info
                 grid-area: email_info
+                margin-bottom: 15px
             p
                 font-size: 13px
                 a
@@ -68,7 +71,32 @@
                 .go-keep-input
                     padding: 6px
                     border-radius: 5px
+                    font-size: 14px
                     ~ label
                         font-size: 15px
                         top: 7px
                         width: fit-content
+                    &:focus, &:valid
+                        ~ label
+                            top: -6px
+                            padding: 0 5px
+                            font-size: 10px
+
+        @media screen and ( max-width: 900px )
+            grid-template-columns: none
+            width: 450px
+            transform: translate(-50%, -76%)
+
+        @media screen and ( max-width: 600px )
+            width: fit-content
+            border: none
+            position: unset
+            transform: unset
+        @media screen and ( max-width: 470px )
+            .form_image
+                display: none
+            .form_section
+                grid-template-areas: "logo logo" "fname fname" "lname lname" "email email" "email_info email_info" "password password" "gmail gmail" "confirm confirm" "btn btn"
+                row-gap: 10px
+                // .confirm
+                //     margin-top: 5px

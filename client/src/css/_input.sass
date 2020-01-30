@@ -12,12 +12,20 @@
             box-sizing: border-box
             letter-spacing: 1px
             outline: none
+    .error
+        position: absolute
+        color: red
+        top: -20px
+        white-space: nowrap
+        background-color: white
+        z-index: 100
 
     .go-keep-input
         border: 1px solid #ccc
         padding: 14px 14px
         transition: 0.4s
         background: transparent
+        border-radius: 5px
 
         ~ .focus-border
             &::before, &::after
@@ -78,4 +86,4 @@
                 transition: 0.3s
                 background: white
                 z-index: 1
-                padding: 5px
+                padding: 0 5px
