@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 // Component
 import LogoAndTitle from "../components/LogoAndTitle";
 import GoInput from "../components/GoInput";
-import API from "../utils/Api";
 import Spinner from "../components/Spinner";
+import { createUser } from "../reducers/user/actions";
 
 // Image
 import createAccount from "../images/signup/create-account_2.png";
@@ -19,11 +19,17 @@ class Signup extends Component {
     super(props);
 
     this.state = {
-      data: { fname: "", lname: "", email: "", password: "", confirm: "" },
-      error: { fname: "", lname: "", email: "", password: "" },
-      status: false,
-      err: ""
+      data: { fname: "", lname: "", email: "", password: "", confirm: "" }
     };
+  }
+
+  // Hooks
+  componentDidMount() {
+    if (this.props.isLogin) this.props.history.push("/home");
+  }
+
+  componentDidUpdate() {
+    if (this.props.isSignup.state) this.props.history.push("/");
   }
 
   handleChange = event => {
@@ -43,61 +49,27 @@ class Signup extends Component {
     return false;
   };
 
-  handleSubmit = async event => {
+  handleSubmit = event => {
     event.preventDefault();
-    this.setState({
-      status: true,
-      error: { fname: "", lname: "", email: "", password: "" },
-      err: ""
-    });
 
     const { password, confirm } = this.state.data;
     if (this.validatePassword(password, confirm)) {
       delete this.state.data.confirm;
 
       let data = JSON.stringify(this.state.data);
-
-      await API.post("signup", data)
-        .then(response => {
-          this.setState({ status: true });
-          setTimeout(() => {
-            this.props.history.push("/");
-          }, 2000);
-        })
-        .catch(error => {
-          console.log(error.response.data.error);
-          setTimeout(() => {
-            this.setState({ status: false });
-            let data = error.response.data.error;
-            if (data.type) {
-              this.setState({
-                error: {
-                  ...this.state.error,
-                  [data.type]: data.message
-                },
-                err: data.message
-              });
-              return;
-            }
-
-            this.setState({
-              error: {
-                ...this.state.error,
-                email: data.message
-              },
-              err: data.message
-            });
-          }, 2000);
-        });
+      this.props.createCurrentUser(data);
     }
   };
 
   render() {
-    const toggler = this.state.status ? (
+    const { isSignup, error, spinner } = this.props;
+
+    const toggler = spinner ? (
       <Spinner />
     ) : (
       <button className="go-keep-btn">Next</button>
     );
+
     return (
       <div className="signup_container">
         <form onSubmit={this.handleSubmit}>
@@ -106,7 +78,7 @@ class Signup extends Component {
             <section className="form_section">
               <LogoAndTitle title="Create your React Account" />
               <GoInput
-                error={this.state.error.fname}
+                error={isSignup.error.fname}
                 className="fname"
                 name="fname"
                 type="text"
@@ -115,7 +87,7 @@ class Signup extends Component {
                 handler={this.handleChange}
               />
               <GoInput
-                error={this.state.error.lname}
+                error={isSignup.error.lname}
                 className="lname"
                 name="lname"
                 type="text"
@@ -124,7 +96,7 @@ class Signup extends Component {
                 handler={this.handleChange}
               />
               <GoInput
-                error={this.state.error.email}
+                error={isSignup.error.email}
                 className="email"
                 name="email"
                 type="email"
@@ -143,7 +115,7 @@ class Signup extends Component {
                 </a>
               </div>
               <GoInput
-                error={this.state.error.password}
+                error={isSignup.error.password}
                 className="password"
                 name="password"
                 type="password"
@@ -174,7 +146,7 @@ class Signup extends Component {
 
             {/* Our Image */}
             <section className="form_image">
-              <p className="error">{this.state.err}</p>
+              <p className="error">{error}</p>
               <img src={createAccount} alt="Sign Up" title="Signup Now" />
               <p>One account across all React App. </p>
             </section>
@@ -185,4 +157,18 @@ class Signup extends Component {
   }
 }
 
-export default connect()(Signup);
+const mapStateToProps = ({ error, isLogin, isSignup, spinner }) => ({
+  error,
+  isLogin,
+  isSignup,
+  spinner
+});
+
+// dispatch to store
+const mapDispatchToProps = dispatch => ({
+  createCurrentUser(user) {
+    dispatch(createUser(user));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

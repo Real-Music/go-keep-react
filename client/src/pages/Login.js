@@ -24,6 +24,7 @@ class Login extends Component {
     };
   }
 
+  // Hooks
   componentDidMount() {
     if (this.props.isLogin) this.props.history.push("/home");
   }
@@ -32,11 +33,11 @@ class Login extends Component {
     if (this.props.isLogin) this.props.history.push("/home");
   }
 
-  handleSubmit = async event => {
+  handleSubmit = event => {
     event.preventDefault();
 
     let data = JSON.stringify(this.state.data);
-    await this.props.getCurrentUser(data);
+    this.props.getCurrentUser(data);
   };
 
   handleInputChange = event => {
