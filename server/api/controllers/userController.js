@@ -22,6 +22,8 @@ module.exports = {
           .status(400)
           .json({ error: { message: "The login information was incorrect" } });
 
+      user["profileImg"] = BASE_URL + user.profileImg;
+
       res
         .status(200)
         .json({ user: user, token: token.jwtSignUser(user.toJSON) });

@@ -21,6 +21,7 @@ module.exports = {
         case "fname":
           res.status(400).json({
             error: {
+              type: "fname",
               message: "Only letters are allow for fname"
             }
           });
@@ -28,6 +29,7 @@ module.exports = {
         case "lname":
           res.status(400).json({
             error: {
+              type: "lname",
               message: "Only letters are allow lname"
             }
           });
@@ -35,6 +37,7 @@ module.exports = {
         case "email":
           res.status(400).json({
             error: {
+              type: "email",
               message: "Invalid email format"
             }
           });
@@ -42,6 +45,7 @@ module.exports = {
         case "password":
           res.status(400).json({
             error: {
+              type: "password",
               message: "Password must have a min character of 5"
             }
           });
