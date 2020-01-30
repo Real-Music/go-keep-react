@@ -15,7 +15,7 @@ export function getUser(user) {
   return async dispatch => {
     dispatch(onSpinner());
     dispatch(clearLoginError());
-    console.log(setTime);
+
     if (user) clearTimeout(setTime);
 
     await BASE_URL.post("/login", user)
@@ -32,7 +32,7 @@ export function getUser(user) {
         await dispatch(isLogIn(true));
       })
       .catch(async error => {
-        console.log("Login Action", error.response.data);
+        console.log("Login Action", error.response.data || error);
 
         setTime = setTimeout(() => {
           dispatch(setLoginError(error.response.data.error.message));

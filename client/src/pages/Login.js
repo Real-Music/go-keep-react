@@ -28,6 +28,10 @@ class Login extends Component {
     if (this.props.isLogin) this.props.history.push("/home");
   }
 
+  componentDidUpdate() {
+    if (this.props.isLogin) this.props.history.push("/home");
+  }
+
   handleSubmit = async event => {
     event.preventDefault();
 
