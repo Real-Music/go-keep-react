@@ -1,0 +1,51 @@
+@import '_var.sass'
+
+.pin_note_container
+    display: inline-block
+    margin-bottom: 1em
+    padding: 14px
+    border-radius: 8px
+    border: 1px solid $home_border_color
+    &:hover
+        .options,.icons
+            opacity: 1 !important
+    // background: red
+
+    .icons
+        display: flex
+        flex-wrap: nowrap
+        .icons_items
+            @include tagContainer
+
+    textarea
+        width: 100%
+        border: none
+        background: transparent
+        resize: none
+        outline: none
+        color: $home_white
+        overflow: hidden
+        height: 18px
+
+    .pin_note_title
+        display: flex
+        justify-content: space-between
+        flex-wrap: nowrap
+        margin-bottom: 5px
+        .icons
+            opacity: 0
+            .icons_items
+                height: fit-content
+                width: fit-content
+                padding: 4px
+        h3
+            pointer-events: none
+            font-size: 18px
+
+    .pin_note_body
+        margin-bottom: 20px
+        #body_dis
+            font-size: 14px
+            pointer-events: none
+    .options
+        opacity: 0

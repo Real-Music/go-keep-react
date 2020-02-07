@@ -1,0 +1,33 @@
+@import '_var'
+
+.home
+    height: 100vh
+    overflow: auto
+    background-color: $home_color
+    transition: unset !important
+    color: $home_white
+    .home_body_wrapper
+        margin-left: 280px
+        .home_body
+            .body_content_wrapper
+                width: 93%
+                margin: 0 auto
+                display: grid
+                grid-template-rows: min-content min-content 1fr
+
+            .pin_note
+                position: relative
+                columns: 220px
+                .pin_note_tag
+                    position: absolute
+                    top: -24px
+                    left: 15px
+                    font-size: 12px
+                    color: $home_darkbrown
+                    letter-spacing: 1px
+
+            .unpin_note
+                margin-top: 150px
+
+    .home_body_wrapper.active
+        margin-left: 0px

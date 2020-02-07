@@ -1,3 +1,52 @@
 $base_color: #f4b425
 $base_red: #ea4635
 $base_blue: #1a73e8
+$home_color: #202124
+$home_border_color: #535456
+$home_white: #ffffff
+$home_hightlight: #8888883b
+$home_darkbrown: #535456
+$home_white_bg: #ffffff
+$home_svg: #5f6368
+$homve_side_nav_hover: #5354565c
+
+@mixin tagContainer
+    height: 51px
+    width: 51px
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 50%
+    cursor: pointer
+    position: relative
+    *
+        pointer-events: none
+    svg
+        fill: $home_svg
+    .tag
+        visibility: hidden
+        pointer-events: none
+        position: absolute
+        bottom: -27px
+        left: 50%
+        transform: translateX(-50%)
+        padding: 3px 9px
+        background: $home_darkbrown
+        border-radius: 4px
+        font-size: 14px
+        transition: unset
+        white-space: nowrap
+        width: fit-content
+        z-index: 100
+    &:hover
+        background-color: $home_hightlight
+        .tag
+            visibility: visible
+            transition: 150ms ease-in-out 0.5s all
+        ~ svg
+            fill: $home_white
+        span, span::before, span::after
+            background-color: $home_white
+
+.icon_items.pin svg
+    fill: $base_color !important

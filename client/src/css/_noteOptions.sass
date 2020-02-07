@@ -1,0 +1,55 @@
+@import '_var.sass'
+
+.icons
+    display: flex
+    flex-wrap: nowrap
+    justify-content: space-between
+    *
+        transition: unset
+    .icon_wrapper.span
+        justify-content: space-between
+        width: 100%
+    .icon_wrapper
+        display: flex
+        .icon_items
+            height: 35px !important
+            width: 35px !important
+            @include tagContainer
+            .tag
+                font-size: 11px
+            *
+                pointer-events: none
+            .more
+                display: block
+                position: relative
+                height: 4px
+                width: 4px
+                border-radius: 50%
+                background-color: $home_svg
+                &::before, &::after
+                    content: ""
+                    position: absolute
+                    height: 100%
+                    width: 100%
+                    border-radius: 50%
+                    background-color: $home_svg
+                &::before
+                    top: -6px
+                &::after
+                    top: 6px
+
+    section
+        display: grid
+        grid-template-columns: 1fr 1fr
+        align-items: center
+        button
+            background: transparent
+            color: $home_svg
+            border-radius: 4px
+            outline: none
+            border: none
+            padding: 7px 20px
+            cursor: pointer
+            &:hover
+                background-color: $home_hightlight
+                color: $home_white

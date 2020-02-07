@@ -29,11 +29,9 @@ a {
 }
 
 /* Spinner */
-.spinner_border {
-  padding: 7px 25px;
-  /* border: 1px solid #2076e8; */
-  width: fit-content;
-  border-radius: 5px;
+.spinner_border .double-bounce1,
+.spinner_border .double-bounce2 {
+  background-color: white !important;
 }
 .spinner {
   width: 20px;

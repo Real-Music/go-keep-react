@@ -1,0 +1,42 @@
+@import '_var'
+
+.side_nav_container
+    // background: red
+    height: calc( 100vh - 64px )
+    width: 280px
+    position: absolute
+    left: 0
+    .side_nav_wrapper
+        ul
+            padding: 8px 0
+            border-bottom: 1px solid $home_border_color
+            li
+                padding-left: 24px
+                border-radius: 0 25px 25px 0
+                padding-bottom: 4px
+                padding-top: 4px
+                transition: unset
+                cursor: pointer
+                &:hover
+                    background-color: $homve_side_nav_hover
+                a
+                    display: flex
+                    flex-wrap: nowrap
+                    width: 100%
+                    align-items: center
+                    color: $home_white
+                    span
+                        padding-left: 32px
+                        display: inline-block
+                        line-height: 40px
+                        vertical-align: top
+                        width: 176px
+                        white-space: nowrap
+                        overflow: hidden
+                        text-overflow: ellipsis
+                        pointer-events: none
+                    svg
+                        fill: $home_white
+                        pointer-events: none
+.side_nav_container.active
+    left: -280px

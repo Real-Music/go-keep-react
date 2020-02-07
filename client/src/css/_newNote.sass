@@ -1,0 +1,44 @@
+@import '_var.sass'
+
+.new_note
+    padding: 35px 0
+    margin-bottom: 27px
+    .new_note_wrapper
+        height: fit-content
+        width: fit-content
+        margin: 0 auto
+        border: 1px solid $home_border_color
+        border-radius: 7px
+        padding: 0 14px
+        outline: none
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.6), 0 2px 6px 2px rgba(0,0,0,0.302)
+        .title
+            display: grid
+            grid-template-columns: 1fr min-content
+            align-content: center
+            align-items: center
+            width: 615px
+            margin: 0 auto
+            cursor: text
+            input
+                background: transparent
+                border: none
+                color: $home_white
+                outline: none
+                font-size: 18px
+                font-weight: bold
+        .icons
+            display: grid
+            grid-template-columns: repeat(2, min-content)
+            .icon_items
+                @include tagContainer
+
+        main.body
+            textarea
+                width: 100%
+                border: none
+                background: transparent
+                resize: none
+                outline: none
+                color: $home_white
+                overflow: hidden

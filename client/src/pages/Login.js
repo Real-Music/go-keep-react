@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-// import API from "../utils/Api";
+
 import { connect } from "react-redux";
 import { getUser } from "../reducers/user/actions";
 

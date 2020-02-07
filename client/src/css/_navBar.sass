@@ -1,0 +1,256 @@
+@import  '_var.sass'
+
+// mixin
+@mixin tag
+    visibility: visible
+    transition: 150ms ease-in-out 0.5s all
+
+.nav_container
+    position: sticky
+    top: 0
+    background-color: $home_color
+    z-index: 100
+    .nav_wrapper
+        // background: red
+        height: 64px
+        display: grid
+        padding: 6px 15px
+        grid-template-columns: auto 1fr min-content
+        border-bottom: 1px solid $home_border_color
+
+        .tag
+            visibility: hidden
+            pointer-events: none
+            position: absolute
+            bottom: -27px
+            left: 0 !important
+            padding: 3px 9px
+            background: $home_darkbrown
+            border-radius: 4px
+            font-size: 14px
+            transition: unset
+            white-space: nowrap
+            width: fit-content
+            z-index: 100
+
+        .logo_3_strip
+            // background-color: green
+            display: grid
+            grid-template-columns: repeat(2,min-content)
+            align-items: center
+            grid-column-gap: 6px
+            min-width: 232px
+            position: relative
+            height: fit-content
+            .strip
+                justify-content: center
+                height: 45px
+                width: 45px
+                border-radius: 50%
+                cursor: pointer
+                &:hover
+                    background: $home_hightlight
+                    ~ .tag
+                        right: 0
+                        @include tag
+                span
+                    pointer-events: none
+                    display: block
+                    height: 2px
+                    background-color: #ffffff
+                    width: 20px
+                    position: relative
+                    &::before, &::after
+                        content: ""
+                        height: 100%
+                        width: 100%
+                        background-color: #ffffff
+                        position: absolute
+                    &::before
+                        top: 5px
+                    &::after
+                        top: -5px
+            div
+                display: flex
+                align-items: center
+                h3
+                    font-weight: lighter
+                    white-space: nowrap
+
+        .search_wrapper
+            display: flex
+            position: relative
+            .search_bar
+                flex-basis: 719px
+                display: flex
+                flex-wrap: nowrap
+                align-items: center
+                background: white
+                border-radius: 10px
+                padding: 0 5px
+                background-color: $home_darkbrown
+                .icon
+                    height: 40px
+                    width: 40px
+                    border-radius: 50%
+                    cursor: pointer
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    margin: 0 5px
+                    border: none
+                    background: unset
+                    &:hover
+                        background-color: $home_hightlight
+                    svg
+                        pointer-events: none
+                        fill: $home_white
+                &:hover
+                    ~ .tag
+                        @include tag
+
+                input
+                    padding: 11px 0px 11px 5px
+                    background-color: transparent
+                    height: 100%
+                    width: 100%
+                    outline: none
+                    border: none
+                    font-size: 16px
+                    &::placeholder
+                        color: $home_white
+
+            .search_bar.focus
+                background-color: $home_white_bg
+                .icon svg
+                    fill: $home_svg
+
+        .account
+            display: grid
+            grid-template-columns: repeat(4, 1fr)
+            .refresh_btn, .grid_layout_btn,.settings,.my_account
+                // background: red
+                @include tagContainer
+                &:hover
+                    background-color: $home_hightlight
+                    .tag
+                        @include tag
+                .tag
+                    left: unset
+                    right: 0
+
+                svg
+                    fill: $home_svg
+
+            .grid_layout_btn
+                span
+                    display: block
+                    position: relative
+                    top: -5px
+                    width: 40%
+                    height: 8px
+                    border: 2.2px solid $home_svg
+                    &::after
+                        content: ""
+                        position: absolute
+                        width: 100%
+                        height: 100%
+                        border: 2.2px solid #5f6368
+                        top: 8px
+                        left: -2px
+
+            .my_account
+                padding: 7px
+                img
+                    height: 100%
+                    border-radius: 50%
+                    object-fit: cover
+                    width: 100%
+                    object-position: top
+                .acc_settings.show
+                    transform: scale(1)
+                .acc_settings
+                    transform: scale(0)
+                    position: absolute
+                    right: -15px
+                    top: 56px
+                    width: fit-content
+                    height: fit-content
+                    background-color: #2d2e30
+                    text-align: center
+                    width: 354px
+                    z-index: 100
+                    pointer-events: unset
+                    *
+                        pointer-events: unset
+                        cursor: initial
+                    img
+                        height: 80px
+                        width: 80px
+                        object-fit: cover
+                        object-position: top
+                    h4
+                        white-space: nowrap
+                    button
+                        background: $base_color
+                        white-space: nowrap
+                        border-radius: 15px
+                        color: $home_color
+                        cursor: pointer
+                        border: 1px solid $base_color
+                        &:hover
+                            background: transparent
+                            border: 1px solid $home_border_color
+                            color: $home_white
+                    .profile
+                        margin: 20px 33px
+                        display: grid
+                        grid-template-rows: repeat(3, min-content)
+                        justify-items: center
+                        grid-row-gap: 10px
+                        .img
+                            position: relative
+                            form
+                                position: absolute
+                                bottom: 0
+                                right: 0
+                                padding: 2px
+                                background: black
+                                height: 30px
+                                width: 30px
+                                border-radius: 50%
+                                &:hover
+                                    svg
+                                        fill: $home_white
+                                label
+                                    cursor: pointer
+                                    height: 100%
+                                    width: 100%
+                                    display: flex
+                                    justify-content: center
+                                    align-items: center
+                                    svg
+                                        pointer-events: none
+                                input
+                                    display: none
+
+                    .update_profile
+                        margin: 20px 33px
+                        border-top: 1px solid
+                        overflow: hidden
+                        height: 0px
+                        .go-form-group
+                            text-align: left
+                            input
+                                background-color: transparent
+                                border: none
+                                border-bottom: 1px solid $home_border_color
+                                outline: none
+                                padding: 5px
+                                color: $home_white
+                        button
+                            margin-top: 15px
+
+                    .update_profile.show
+                        padding: 10px
+                        height: 165px

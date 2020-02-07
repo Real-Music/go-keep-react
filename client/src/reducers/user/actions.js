@@ -15,9 +15,39 @@ export const CLEAR_LOGIN_ERROR = "CLEAR_LOGIN_ERROR";
 export const CLEAR_SIGNUP_ERROR = "CLEAR_SIGNUP_ERROR";
 export const IS_LOGIN = "IS_LOGIN";
 export const IS_SIGNUP = "IS_SIGNUP";
+export const SET_TOKEN = "SET_TOKEN";
 
 // TODO Delete this for production
 let setTime;
+
+export function changeProfile(userId, user, token) {
+  return async dispatch => {
+    await BASE_URL.patch(`users/${userId}`, user, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        dispatch(setUser(response.data.user));
+        console.log("Update Profile", response.data);
+      })
+      .catch(error => console.log(error.response.data));
+  };
+}
+
+export function updateAccount(userId, user, token) {
+  return async dispatch => {
+    await BASE_URL.patch(`users/${userId}`, user, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        dispatch(setUser(response.data.user));
+        console.log("Update Account", response.data);
+      })
+      .catch(error => console.log(error.response.data));
+  };
+}
 
 export function createUser(user) {
   return async dispatch => {
@@ -79,10 +109,11 @@ export function getUser(user) {
         delete user["password"];
         delete user["createdAt"];
         delete user["updatedAt"];
-        user["token"] = response.data.token;
+        let token = response.data.token;
 
         setTimeout(() => {
-          dispatch(setUser(response.data.user));
+          dispatch(setUser(user));
+          dispatch(setToken(token));
           dispatch(isLogIn(true));
           dispatch(offSpinner());
         }, 2000);
@@ -148,5 +179,12 @@ export function isSignup(boolean) {
   return {
     type: IS_SIGNUP,
     boolean
+  };
+}
+
+export function setToken(token) {
+  return {
+    type: SET_TOKEN,
+    token
   };
 }
