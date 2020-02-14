@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { changeLayout } from "../reducers/layout/actions";
 
 // css
 import "../css/_navBar.sass";
@@ -18,6 +19,7 @@ class NavBar extends Component {
       imagePreviewUrl: "",
       edit: false,
       showAccount: false,
+      showSetting: false,
       data: {
         fname: fname,
         lname: lname,
@@ -91,19 +93,45 @@ class NavBar extends Component {
     setUpdateAccount(id, data, token);
   };
 
+  handleSettings = event => {
+    if (event.target.className === "settings") {
+      this.setState({
+        ...this.state,
+        showAccount: false,
+        edit: false,
+        showSetting: !this.state.showSetting
+      });
+    }
+  };
+
   handleAccountSetting = event => {
     if (event.target.className === "my_account") {
       this.setState({
         ...this.state,
+        edit: false,
+        showSetting: false,
         showAccount: !this.state.showAccount
       });
       return;
     }
   };
 
+  handleReset = () =>
+    this.setState({
+      ...this.state,
+      edit: false,
+      showSetting: false,
+      showAccount: false
+    });
+
+  handleLayout = () => {
+    const { toggleLayout, layout } = this.props;
+    toggleLayout(!layout);
+  };
+
   render() {
     const { fname, lname, email, profileImg } = this.props.user;
-    const { handleRefresh } = this.props;
+    const { handleRefresh, layout } = this.props;
 
     const togCross =
       this.state.isFocus !== "" ? (
@@ -183,11 +211,27 @@ class NavBar extends Component {
               </svg>
               <p className="tag">Refresh</p>
             </div>
-            <div className="grid_layout_btn">
-              <span></span>
+            <div className="grid_layout_btn" onClick={this.handleLayout}>
+              {layout ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                </svg>
+              ) : (
+                <span></span>
+              )}
               <p className="tag">List View</p>
             </div>
-            <div className="settings">
+            <div
+              className="settings"
+              onClick={this.handleSettings}
+              tabIndex="0"
+              onBlur={this.handleReset}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -197,6 +241,17 @@ class NavBar extends Component {
                 <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
               </svg>
               <p className="tag">Settings</p>
+              <div
+                className={`gen-settings ${
+                  this.state.showSetting ? "show" : ""
+                }`}
+              >
+                <ul>
+                  <li>Disable dark theme</li>
+                  <li>Send Feedback</li>
+                  <li>Help</li>
+                </ul>
+              </div>
             </div>
             <div className="my_account" onClick={this.handleAccountSetting}>
               <img src={profileImg} alt="" />
@@ -296,11 +351,12 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = ({ spinner, user, token }) => ({
+const mapStateToProps = ({ spinner, user, token, layout }) => ({
   spinner,
   user,
   token,
-  userId: user["id"]
+  userId: user["id"],
+  layout: layout["layout"]
 });
 
 // dispatch to store
@@ -310,6 +366,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setUpdateAccount(userId, user, token) {
     dispatch(updateAccount(userId, user, token));
+  },
+  toggleLayout(boolean) {
+    dispatch(changeLayout(boolean));
   }
 });
 

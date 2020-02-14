@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+// import Spinner from "../components/Spinner";
+import NoteOptions from "../components/NoteOptions";
 
 // css
 import "../css/_notes.sass";
-import NoteOptions from "./NoteOptions";
-import { connect } from "react-redux";
 
 class Notes extends Component {
   constructor(props) {
@@ -16,16 +16,35 @@ class Notes extends Component {
 
   componentDidMount() {
     this.handleKeyPress();
+    this.handleTitle();
   }
 
-  handleKeyPress = () => {
-    let body = document.querySelectorAll("#body_dis");
+  componentDidUpdate() {
+    this.handleKeyPress();
+    this.handleTitle();
+  }
+  handleTitle = () => {
+    let body = document.querySelectorAll("#title");
     if (body) {
       body.forEach(textarea => {
         setTimeout(function() {
-          if (textarea.scrollHeight > 300) {
+          textarea.style.cssText = "height:auto; padding:0";
+          textarea.style.cssText = "height:" + textarea.scrollHeight + "px";
+        }, 0);
+      });
+      return;
+    }
+  };
+
+  handleKeyPress = () => {
+    let body = document.querySelectorAll("#body_dis");
+    // const sizes = [330, 320, 340, 330, 310, 350];
+    if (body) {
+      body.forEach(textarea => {
+        setTimeout(function() {
+          if (textarea.scrollHeight > 330) {
             textarea.style.cssText = "height:auto; padding:0";
-            textarea.style.cssText = "height:" + 300 + "px";
+            textarea.style.cssText = "height:" + 330 + "px";
           } else {
             textarea.style.cssText = "height:auto; padding:0";
             textarea.style.cssText = "height:" + textarea.scrollHeight + "px";
@@ -37,12 +56,22 @@ class Notes extends Component {
   };
 
   render() {
-    const { notes } = this.props;
+    const { notes, handleEditNote } = this.props;
     const noteList = notes.map(note => {
       return (
-        <div className="pin_note_container" key={note.id}>
+        <div
+          className="pin_note_container"
+          tabIndex="1"
+          onFocus={() => handleEditNote(note.id, note.pin)}
+          key={note.id}
+        >
           <div className="pin_note_title">
-            <h3>{note.title}</h3>
+            <textarea
+              name="title"
+              id="title"
+              onChange={this.handleKeyPress}
+              value={note.title}
+            ></textarea>
             <div className="icons">
               <div className="icons_items">
                 <svg
@@ -66,7 +95,7 @@ class Notes extends Component {
             ></textarea>
           </div>
           <div className="options">
-            <NoteOptions button={false} />
+            <NoteOptions />
           </div>
         </div>
       );
@@ -76,4 +105,4 @@ class Notes extends Component {
   }
 }
 
-export default connect()(Notes);
+export default Notes;

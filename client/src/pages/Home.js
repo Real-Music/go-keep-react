@@ -3,17 +3,20 @@ import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
 import Notes from "../components/Notes";
 import NewNote from "../components/NewNote";
+import Spinner from "../components/Spinner";
 
 // actions
 import {
   createNote,
   fetchPinNotes,
-  fetchUnpinNotes
+  fetchUnpinNotes,
+  setNoteId
 } from "../reducers/notes/actions";
 
 // css
 import "../css/_home.sass";
 import { connect } from "react-redux";
+import EditNote from "../components/EditNote";
 
 class Home extends Component {
   constructor(props) {
@@ -23,7 +26,9 @@ class Home extends Component {
       reload: false,
       isActive: "",
       showBody: false,
+      layout: false,
       placeHolder: "Take a note...",
+      updateNote: false,
       data: {
         title: "",
         body: "",
@@ -39,7 +44,7 @@ class Home extends Component {
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { fetchPinNotes, fetchUnpinNotes, userId, token } = this.props;
     fetchPinNotes(userId, token);
     fetchUnpinNotes(userId, token);
@@ -60,14 +65,15 @@ class Home extends Component {
     let body = event.target;
     setTimeout(function() {
       body.style.cssText = "height:auto; padding:0";
-      body.style.cssText = "height:" + body.scrollHeight + "px";
+      body.style.cssText =
+        "height:" + body.scrollHeight + "px; padding-top:14px";
     }, 0);
 
     this.setState({
       ...this.state,
       data: {
         ...this.state.data,
-        body: event.target.value
+        [event.target.name]: event.target.value
       }
     });
   };
@@ -79,13 +85,6 @@ class Home extends Component {
       placeHolder: "Title"
     });
   };
-
-  // New Note title conten
-  handleTitle = event =>
-    this.setState({
-      ...this.state,
-      data: { ...this.state.data, title: event.target.value }
-    });
 
   // New Note body content
   handleBlur = event => {
@@ -119,17 +118,46 @@ class Home extends Component {
     });
   };
 
+  handleLayout = () => {
+    this.setState({
+      ...this.state,
+      layout: !this.state.layout
+    });
+  };
+
   // New Note
   newNote = () => {
     const { userId } = this.props;
+    const { title, body } = this.state.data;
+    if (title === "" && body === "") return;
     let data = this.state.data;
     data["UserId"] = userId;
     data = JSON.stringify(data);
 
     this.props.createNote(data, this.props.token);
+    setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showBody: false,
+        placeHolder: "Take a note...",
+        data: { title: "", body: "", pin: false }
+      });
+    }, 2000);
   };
+
+  handleEditNote = (id, pin) => {
+    this.setState({ ...this.state, updateNote: true });
+    const { setId } = this.props;
+    setId({ id, pin });
+  };
+
+  handleUpdateNote = name => {
+    if (name === "google-edit-note show")
+      return this.setState({ ...this.state, updateNote: false });
+  };
+
   render() {
-    const { pin, unpin, user } = this.props;
+    const { pin, unpin, user, layout } = this.props;
     return (
       <div className="home">
         <NavBar
@@ -138,6 +166,10 @@ class Home extends Component {
           handleRefresh={this.handleRefresh}
         />
         <div className={`home_body_wrapper ${this.state.isActive}`}>
+          <EditNote
+            show={this.state.updateNote}
+            handleUpdateNote={this.handleUpdateNote}
+          />
           <SideBar className={this.state.isActive} />
 
           <div className="home_body" onClick={this.handleBlur}>
@@ -157,21 +189,27 @@ class Home extends Component {
               </div>
 
               {pin.notes ? (
-                <div className="pin_note">
-                  <Notes notes={pin.notes} />
+                <div className={`pin_note ${layout ? "layout" : ""}`}>
+                  <Notes
+                    handleEditNote={this.handleEditNote}
+                    notes={pin.notes}
+                  />
                   <small className="pin_note_tag">{`PINNED ${pin.count}`}</small>
                 </div>
               ) : (
-                <small>Loading...</small>
+                <Spinner border={true} />
               )}
               <div className="unpin_note">
                 {unpin.notes ? (
-                  <div className="pin_note">
-                    <Notes notes={unpin.notes} />
+                  <div className={`pin_note ${layout ? "layout" : ""}`}>
+                    <Notes
+                      notes={unpin.notes}
+                      handleEditNote={this.handleEditNote}
+                    />
                     <small className="pin_note_tag">{`OTHERS ${unpin.count}`}</small>
                   </div>
                 ) : (
-                  <small>Loading...</small>
+                  <Spinner border={true} />
                 )}
               </div>
             </div>
@@ -182,14 +220,15 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = ({ spinner, isLogin, user, token, notes }) => ({
+const mapStateToProps = ({ spinner, isLogin, user, token, notes, layout }) => ({
   spinner,
   isLogin,
   user,
   token,
   userId: user["id"],
   pin: notes["pin"],
-  unpin: notes["unpin"]
+  unpin: notes["unpin"],
+  layout: layout["layout"]
 });
 
 // dispatch to store
@@ -202,6 +241,9 @@ const mapDispatchToProps = dispatch => ({
   },
   fetchUnpinNotes(userId, token) {
     dispatch(fetchUnpinNotes(userId, token));
+  },
+  setId(id) {
+    dispatch(setNoteId(id));
   }
 });
 

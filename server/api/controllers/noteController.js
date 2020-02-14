@@ -35,7 +35,8 @@ module.exports = {
         });
 
       const { count, rows } = await Note.findAndCountAll({
-        where: { UserId: req.params.userId, pin: true }
+        where: { UserId: req.params.userId, pin: true },
+        order: [["updatedAt", "DESC"]]
       });
 
       res.status(200).json({ count: count, notes: rows });
@@ -56,7 +57,8 @@ module.exports = {
         });
 
       const { count, rows } = await Note.findAndCountAll({
-        where: { UserId: req.params.userId, pin: false }
+        where: { UserId: req.params.userId, pin: false },
+        order: [["updatedAt", "DESC"]]
       });
 
       res.status(200).json({ count: count, notes: rows });

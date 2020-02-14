@@ -5,7 +5,6 @@ import NoteOptions from "./NoteOptions";
 import "../css/_newNote.sass";
 
 export default function NewNote(props) {
-  //   console.log(props, "new note");
   const togglePin = props.showBody ? (
     <div
       className={`icon_items ${props.pin ? "pin" : ""}`}
@@ -72,14 +71,20 @@ export default function NewNote(props) {
         onFocus={props.handleFocus}
       >
         <div className="title">
-          <input
+          <textarea
+            name="title"
+            placeholder={props.placeHolder}
+            onChange={props.handleKeyPress}
+            value={props.title}
+          ></textarea>
+          {/* <input
             type="text"
             name="title"
             placeholder={props.placeHolder}
             autoComplete="off"
             onChange={props.handleTitle}
             value={props.title}
-          />
+          /> */}
 
           <div className="icons">{togglePin}</div>
         </div>

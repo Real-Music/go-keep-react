@@ -4,10 +4,39 @@ import { onSpinner, offSpinner } from "../spinner/actions";
 export const CREATE_NOTE = "CREATE_NOTE";
 export const SET_PIN_NOTES = "SET_PIN_NOTES";
 export const SET_UNPIN_NOTES = "SET_UNPIN_NOTES";
-const headers = {
-  "Content-Type": "application/json",
-  Authorization: "JWT fefege..."
-};
+export const UPDATE_NEW_PIN_NOTES = "UPDATE_NEW_PIN_NOTES";
+export const UPDATE_NEW_UNPIN_NOTES = "UPDATE_NEW_UNPIN_NOTES";
+export const SET_CURRENT_NOTE = "SET_CURRENT_NOTE";
+export const UPDATE_PIN_NOTES = "UPDATE_PIN_NOTES";
+export const UPDATE_UNPIN_NOTES = "UPDATE_UNPIN_NOTES";
+
+export function setNoteId(id) {
+  return dispatch => {
+    dispatch(setId(id));
+  };
+}
+
+export function updateNote(noteId, data, token) {
+  return async dispatch => {
+    await BASE_URL.patch(`/notes/${noteId}`, data, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        let note = response.data.note;
+        switch (note.pin) {
+          case true:
+            dispatch(updatePinNote(note));
+            break;
+          case false:
+            dispatch(updateUnpinNote(note));
+            break;
+          default:
+            break;
+        }
+      })
+      .catch(error => console.log(error));
+  };
+}
 
 export function createNote(note, token) {
   return async dispatch => {
@@ -17,11 +46,18 @@ export function createNote(note, token) {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-        console.log(response.data);
-        // TODO add created note to existing note
+        let data = response.data.createdNote;
+        setTimeout(() => {
+          if (data.pin) {
+            dispatch(updateNewPinNotes(data));
+            dispatch(offSpinner());
+            return;
+          }
+          dispatch(updateNewUnpinNotes(data));
+          dispatch(offSpinner());
+        }, 2000);
       })
       .catch(error => {
-        // TODO update error if any
         console.log(error.response.data);
       });
   };
@@ -29,13 +65,16 @@ export function createNote(note, token) {
 
 export function fetchPinNotes(userId, token) {
   return async dispatch => {
-    // dispatch(onSpinner());
+    dispatch(onSpinner());
 
     await BASE_URL.get(`/notes/${userId}/pin`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-        dispatch(setPinNotes(response.data));
+        setTimeout(() => {
+          dispatch(setPinNotes(response.data));
+          dispatch(offSpinner());
+        }, 2000);
       })
       .catch(error => {
         console.log(error.response.data);
@@ -45,13 +84,16 @@ export function fetchPinNotes(userId, token) {
 
 export function fetchUnpinNotes(userId, token) {
   return async dispatch => {
-    // dispatch(onSpinner());
+    dispatch(onSpinner());
 
     await BASE_URL.get(`/notes/${userId}/unpin`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-        dispatch(setUnpinNotes(response.data));
+        setTimeout(() => {
+          dispatch(setUnpinNotes(response.data));
+          dispatch(offSpinner());
+        }, 2000);
       })
       .catch(error => {
         console.log(error.response.data);
@@ -70,5 +112,39 @@ export function setUnpinNotes(notes) {
   return {
     type: SET_UNPIN_NOTES,
     notes
+  };
+}
+
+export function updateNewPinNotes(note) {
+  return {
+    type: UPDATE_NEW_PIN_NOTES,
+    note
+  };
+}
+export function updateNewUnpinNotes(note) {
+  return {
+    type: UPDATE_NEW_UNPIN_NOTES,
+    note
+  };
+}
+
+export function setId(id) {
+  return {
+    type: SET_CURRENT_NOTE,
+    id
+  };
+}
+
+export function updatePinNote(note) {
+  return {
+    type: UPDATE_PIN_NOTES,
+    note
+  };
+}
+
+export function updateUnpinNote(note) {
+  return {
+    type: UPDATE_UNPIN_NOTES,
+    note
   };
 }

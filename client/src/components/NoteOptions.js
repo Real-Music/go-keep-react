@@ -6,23 +6,11 @@ import { connect } from "react-redux";
 import "../css/_noteOptions.sass";
 
 function NoteOptions(props) {
-  const button = props.button ? (
-    <section>
-      {props.spinner ? (
-        <button>
-          <Spinner border={true} />
-        </button>
-      ) : (
-        <button onClick={props.newNote}>Save</button>
-      )}
-      <button>Close</button>
-    </section>
-  ) : (
-    false
-  );
+  // const button =
+  const { layout } = props;
 
   return (
-    <div className="icons">
+    <div className={`icons ${layout ? "show" : ""}`}>
       <div className={`icon_wrapper ${!props.button ? "span" : ""}`}>
         <div className="icon_items">
           <svg
@@ -77,12 +65,26 @@ function NoteOptions(props) {
           <p className="tag">More</p>
         </div>
       </div>
-      {button}
+      {props.button ? (
+        <section>
+          {props.spinner ? (
+            <button>
+              <Spinner border={true} />
+            </button>
+          ) : (
+            <button onClick={props.newNote}>Save</button>
+          )}
+          {/* <button>Close</button> */}
+        </section>
+      ) : (
+        false
+      )}
     </div>
   );
 }
-const mapStateToProps = ({ spinner }) => ({
-  spinner
+const mapStateToProps = ({ spinner, layout }) => ({
+  spinner,
+  layout: layout["layout"]
 });
 
 export default connect(mapStateToProps)(NoteOptions);

@@ -20,7 +20,7 @@ router.get(
 );
 
 // create label
-router.post("/", verifyToken, labelController.createLabel);
+router.post("/", verifyToken, check.UserID, labelController.createLabel);
 
 // update
 router.patch(

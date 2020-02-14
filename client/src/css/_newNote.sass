@@ -12,6 +12,7 @@
         padding: 0 14px
         outline: none
         box-shadow: 0 1px 2px 0 rgba(0,0,0,0.6), 0 2px 6px 2px rgba(0,0,0,0.302)
+        // overflow: auto
         .title
             display: grid
             grid-template-columns: 1fr min-content
@@ -20,13 +21,16 @@
             width: 615px
             margin: 0 auto
             cursor: text
-            input
+            input, textarea
                 background: transparent
                 border: none
                 color: $home_white
                 outline: none
+                resize: none
                 font-size: 18px
                 font-weight: bold
+                height: 30px
+                // padding-top: 15px
         .icons
             display: grid
             grid-template-columns: repeat(2, min-content)
@@ -41,4 +45,4 @@
                 resize: none
                 outline: none
                 color: $home_white
-                overflow: hidden
+                max-height: 660px

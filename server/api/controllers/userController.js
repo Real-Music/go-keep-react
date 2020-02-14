@@ -63,15 +63,19 @@ module.exports = {
   // update user details
   updateUser: async (req, res, next) => {
     try {
+      console.log(req.file);
       await imageHandler(req, res, async err => {
         if (err) {
           res.status(400).json({
             error: { message: err }
           });
         } else {
-          req.body["profileImg"] = req.file.path.replace("public/", "");
+          if (req.file)
+            req.body["profileImg"] = req.file.path.replace("public/", "");
 
-          const user = await User.findByPk(req.params.userId);
+          const user = await User.findByPk(req.params.userId, {
+            attributes: ["id", "fname", "lname", "email", "profileImg"]
+          });
 
           if (user)
             return await user.update(req.body).then(response => {

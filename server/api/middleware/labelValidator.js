@@ -1,6 +1,35 @@
 const Joi = require("@hapi/joi");
 
 module.exports = {
+  /** Create New Label Validator */
+  UserID: (req, res, next) => {
+    const schema = Joi.object({
+      UserId: Joi.number().required()
+    });
+
+    const { error, value } = schema.validate({ UserId: req.body.UserId });
+    if (error) {
+      switch (error.details[0].context.key) {
+        case "UserId":
+          res.status(400).json({
+            error: {
+              message: "UserId is required"
+            }
+          });
+          break;
+
+        default:
+          res.status(400).json({
+            error: {
+              message: "Invalid User Credentails"
+            }
+          });
+          break;
+      }
+    } else {
+      next();
+    }
+  },
   labelID: (req, res, next) => {
     const schema = Joi.object({
       labelId: Joi.number().required()

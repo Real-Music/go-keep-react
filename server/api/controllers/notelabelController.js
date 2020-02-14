@@ -1,5 +1,5 @@
 "use strict";
-const { Note, Label, NoteLabel } = require("../../database/models");
+const { NoteLabel } = require("../../database/models");
 
 module.exports = {
   associate: async (label, noteId) => {
@@ -14,7 +14,7 @@ module.exports = {
             return { message: { status: true } };
           })
           .catch(error => {
-            console.log(error)
+            console.log(error);
             return {
               message: {
                 status: false,

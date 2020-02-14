@@ -12,11 +12,14 @@ import spinner from "./spinner";
 import error from "./spinner/error";
 
 import notes from "./notes";
+import id from "./notes/id";
+
+import layout from "./layout";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "isLogin", "token"]
+  whitelist: ["user", "isLogin", "token", "layout"]
 };
 
 const rootReducer = combineReducers({
@@ -27,7 +30,9 @@ const rootReducer = combineReducers({
   loginError,
   error,
   spinner,
-  notes
+  notes,
+  layout,
+  id
 });
 
 export default persistReducer(persistConfig, rootReducer);

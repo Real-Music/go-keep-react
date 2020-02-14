@@ -64,7 +64,12 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = models => {
     // associations can be defined here
     User.hasMany(models.Note, { as: "userId" });
+    User.hasMany(models.Label, { as: "user_Id" });
   };
+
+  // User.associate = models => {
+  //   User.hasMany(models.Label, { as: "userId" });
+  // };
 
   return User;
 };

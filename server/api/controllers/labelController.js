@@ -33,6 +33,13 @@ module.exports = {
   // create label
   createLabel: async (req, res, next) => {
     try {
+      if (!(await User.findByPk(req.body.UserId)))
+        return res.status(400).json({
+          error: {
+            message: `User doesn't exist`
+          }
+        });
+
       if (await Label.findOne({ where: { name: req.body.name } }))
         return res.status(400).json({
           message: "This label name is already in use"
