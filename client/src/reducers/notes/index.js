@@ -4,7 +4,8 @@ import {
   UPDATE_NEW_PIN_NOTES,
   UPDATE_NEW_UNPIN_NOTES,
   UPDATE_PIN_NOTES,
-  UPDATE_UNPIN_NOTES
+  UPDATE_UNPIN_NOTES,
+  DELETE_NOTE
 } from "./actions";
 
 const initialState = { pin: {}, unpin: {} };
@@ -109,6 +110,25 @@ export default (state = initialState, action) => {
           notes: [action.note, ...unpinNotes]
         }
       };
+
+    case DELETE_NOTE:
+      if (action.pin) {
+        return {
+          ...state,
+          pin: {
+            count: state.pin.count - 1,
+            notes: [...state.pin.notes].filter(note => note.id !== action.id)
+          }
+        };
+      } else {
+        return {
+          ...state,
+          unpin: {
+            count: state.unpin.count - 1,
+            notes: [...state.unpin.notes].filter(note => note.id !== action.id)
+          }
+        };
+      }
     default:
       return state;
   }

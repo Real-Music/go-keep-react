@@ -1,5 +1,32 @@
 @import '_var.sass'
 
+.google-popup.show
+    transform: scale(1)
+.google-popup
+    transform: scale(0)
+    position: absolute
+    top: -82px
+    right: -15px
+    background: $home_sittings
+    border-radius: 5px
+    pointer-events: unset !important
+    *
+        pointer-events: unset !important
+        cursor: initial
+    ul
+        list-style: none
+        white-space: nowrap
+        font-size: 15px
+        display: flex
+        flex-direction: column
+        padding: 10px 0
+        li
+            padding: 5px 10px 5px 17px
+            cursor: pointer
+            font-size: 13px
+            &:hover
+                background-color: $home_hightlight
+
 .icons.show
     width: fit-content
 .icons

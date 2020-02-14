@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Spinner from "../components/Spinner";
 import { connect } from "react-redux";
 
@@ -7,7 +7,12 @@ import "../css/_noteOptions.sass";
 
 function NoteOptions(props) {
   // const button =
-  const { layout } = props;
+  const { layout, deleteNote } = props;
+  const [more, setMore] = useState(false);
+
+  const moreHandler = () => {
+    setMore(!more);
+  };
 
   return (
     <div className={`icons ${layout ? "show" : ""}`}>
@@ -60,9 +65,15 @@ function NoteOptions(props) {
           <p className="tag">Archive</p>
         </div>
 
-        <div className="icon_items">
+        <div className="icon_items" onClick={moreHandler}>
           <span className="more"></span>
           <p className="tag">More</p>
+          <div className={`google-popup ${more ? "show" : ""}`}>
+            <ul>
+              <li onClick={deleteNote}>Delete note</li>
+              <li>Add label</li>
+            </ul>
+          </div>
         </div>
       </div>
       {props.button ? (

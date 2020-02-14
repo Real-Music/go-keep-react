@@ -18,17 +18,7 @@ class EditNote extends Component {
       }
     };
   }
-  // componentDidMount() {
-  //   let pin = document.querySelector(".google-edit-note #pin");
-  //   pin = pin.className.split(" ")[1] === "pin" ? true : false;
-  //   this.setState({
-  //     ...this.state,
-  //     data: {
-  //       ...this.state.data,
-  //       pin: pin
-  //     }
-  //   });
-  // }
+
   componentDidUpdate() {
     let body = document.querySelectorAll(".google-edit-note.show textarea");
     body.forEach(ele => {

@@ -9,10 +9,24 @@ export const UPDATE_NEW_UNPIN_NOTES = "UPDATE_NEW_UNPIN_NOTES";
 export const SET_CURRENT_NOTE = "SET_CURRENT_NOTE";
 export const UPDATE_PIN_NOTES = "UPDATE_PIN_NOTES";
 export const UPDATE_UNPIN_NOTES = "UPDATE_UNPIN_NOTES";
+export const DELETE_NOTE = "DELETE_NOTE";
 
 export function setNoteId(id) {
   return dispatch => {
     dispatch(setId(id));
+  };
+}
+
+export function deleteNote(noteId, pin, token) {
+  const note = { id: noteId, pin: pin };
+  return async dispatch => {
+    await BASE_URL.delete(`/notes/${noteId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        dispatch(deletedNote(note));
+      })
+      .catch(error => console.log(error.response.data));
   };
 }
 
@@ -121,6 +135,7 @@ export function updateNewPinNotes(note) {
     note
   };
 }
+
 export function updateNewUnpinNotes(note) {
   return {
     type: UPDATE_NEW_UNPIN_NOTES,
@@ -146,5 +161,13 @@ export function updateUnpinNote(note) {
   return {
     type: UPDATE_UNPIN_NOTES,
     note
+  };
+}
+
+export function deletedNote(note) {
+  return {
+    type: DELETE_NOTE,
+    id: note.id,
+    pin: note.pin
   };
 }

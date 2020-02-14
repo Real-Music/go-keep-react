@@ -2,8 +2,12 @@ import React, { Component } from "react";
 // import Spinner from "../components/Spinner";
 import NoteOptions from "../components/NoteOptions";
 
+// action
+import { deleteNote } from "../reducers/notes/actions";
+
 // css
 import "../css/_notes.sass";
+import { connect } from "react-redux";
 
 class Notes extends Component {
   constructor(props) {
@@ -55,6 +59,11 @@ class Notes extends Component {
     }
   };
 
+  deleteNoteHandler = (id, pin) => {
+    const { deleteUserNote, token } = this.props;
+    deleteUserNote(id, pin, token);
+  };
+
   render() {
     const { notes, handleEditNote } = this.props;
     const noteList = notes.map(note => {
@@ -62,8 +71,9 @@ class Notes extends Component {
         <div
           className="pin_note_container"
           tabIndex="1"
-          onFocus={() => handleEditNote(note.id, note.pin)}
+          onDoubleClick={handleEditNote(note.id, note.pin)}
           key={note.id}
+          title="Double click to edit."
         >
           <div className="pin_note_title">
             <textarea
@@ -95,7 +105,9 @@ class Notes extends Component {
             ></textarea>
           </div>
           <div className="options">
-            <NoteOptions />
+            <NoteOptions
+              deleteNote={() => this.deleteNoteHandler(note.id, note.pin)}
+            />
           </div>
         </div>
       );
@@ -105,4 +117,15 @@ class Notes extends Component {
   }
 }
 
-export default Notes;
+const mapStateToProps = ({ token }) => ({
+  token
+});
+
+// dispatch to store
+const mapDispatchToProps = dispatch => ({
+  deleteUserNote(noteId, pin, token) {
+    dispatch(deleteNote(noteId, pin, token));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notes);

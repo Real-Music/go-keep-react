@@ -145,7 +145,8 @@ class Home extends Component {
     }, 2000);
   };
 
-  handleEditNote = (id, pin) => {
+  handleEditNote = (id, pin) => event => {
+    event.persist();
     this.setState({ ...this.state, updateNote: true });
     const { setId } = this.props;
     setId({ id, pin });
