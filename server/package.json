@@ -19,7 +19,7 @@
   "homepage": "https://github.com/Real-Music/go-keep-react#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
